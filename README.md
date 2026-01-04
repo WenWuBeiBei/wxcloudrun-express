@@ -57,6 +57,8 @@
    
    浏览器访问 `http://localhost:80`
 
+**💡 需要更详细的指导？** 查看[快速开发指南](docs/QUICKSTART.md)
+
 ### 微信云托管部署
 
 1. 前往 [微信云托管控制台](https://cloud.weixin.qq.com/cloudrun/)
@@ -127,10 +129,11 @@
 ## 开发指南
 
 详细的开发规范和指南请查看：
-- [开发规范文档](docs/DEVELOPMENT.md)
-- [API 文档](docs/API.md)
-- [升级指南](docs/UPGRADE.md)
-- [变更日志](docs/CHANGELOG.md)
+- [快速开发指南](docs/QUICKSTART.md) - 快速上手开发
+- [开发规范文档](docs/DEVELOPMENT.md) - 编码规范和最佳实践
+- [API 文档](docs/API.md) - 接口文档和使用说明
+- [升级指南](docs/UPGRADE.md) - 版本升级说明
+- [变更日志](docs/CHANGELOG.md) - 版本变更记录
 
 ## 环境变量说明
 
