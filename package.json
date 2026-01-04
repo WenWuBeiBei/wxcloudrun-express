@@ -1,12 +1,20 @@
 {
-  "name": "wxcloudrun-express",
+  "name": "wenwubeibei-toolset",
   "version": "1.0.0",
-  "description": "微信云托管 express 框架模版",
+  "description": "文武贝贝工具集 - 基于微信云托管的小程序工具集服务",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js"
   },
-  "author": "",
+  "keywords": [
+    "微信小程序",
+    "微信云托管",
+    "工具集",
+    "express",
+    "wechat"
+  ],
+  "author": "WenWuBeiBei",
   "license": "Apache-2.0",
   "dependencies": {
     "cors": "^2.8.5",
