@@ -1,169 +1,89 @@
-# 文武贝贝工具集
+# 文武贝贝工具集（微信云托管版）
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D12.0.0-brightgreen.svg)](https://nodejs.org/)
+基于微信云托管的 Node.js/Express 后端骨架，为小程序「文武贝贝」提供可扩展的工具集服务。当前版本聚焦基础设施，方便后续按需接入多个小工具模块。
 
-文武贝贝工具集是一个基于微信云托管的微信小程序工具集服务，旨在提供多种实用小工具，为用户提供便捷的服务体验。
+## 核心特性
 
-## 项目简介
-
-本项目采用 Node.js + Express 框架构建后端服务，配合微信云托管平台部署，为微信小程序提供稳定可靠的后端支持。项目采用模块化设计，支持快速扩展和集成新的工具功能。
-
-## 技术栈
-
-- **运行环境**: Node.js >= 12.0.0
-- **Web 框架**: Express 4.x
-- **数据库**: MySQL (通过 Sequelize ORM)
-- **部署平台**: 微信云托管
-- **其他依赖**: cors, morgan, mysql2, sequelize
+- 面向微信小程序的轻量级服务框架，内置健康检查与 OpenID 获取
+- 模块化目录结构，适合快速接入多工具场景
+- 统一响应格式、错误码与参数校验示例
+- 支持无数据库配置的快速启动，本地体验更友好
+- 覆盖本地开发与微信云托管部署流程
 
 ## 快速开始
 
-### 前置要求
+### 环境要求
+- Node.js >= 12
+- （可选）MySQL 8.x，用于正式接入数据
+- 微信开发者账号 + 云托管服务
 
-- Node.js 12.0 或更高版本
-- MySQL 数据库（微信云托管会自动提供）
-- 微信开发者账号
-
-### 本地开发
-
-1. **克隆项目**
-   ```bash
-   git clone https://github.com/WenWuBeiBei/wxcloudrun-express.git
-   cd wxcloudrun-express
-   ```
-
-2. **安装依赖**
+### 本地运行
+1. 安装依赖：
    ```bash
    npm install
    ```
-
-3. **配置环境变量**
-   
-   创建 `.env` 文件并配置以下环境变量：
-   ```
-   MYSQL_USERNAME=你的数据库用户名
-   MYSQL_PASSWORD=你的数据库密码
-   MYSQL_ADDRESS=数据库地址:端口
+2. 配置环境变量（可选，未配置则跳过数据库连接）：
+   ```env
+   MYSQL_USERNAME=your_user
+   MYSQL_PASSWORD=your_password
+   MYSQL_ADDRESS=your_host:3306
    PORT=80
    ```
-
-4. **启动服务**
+3. 启动服务：
    ```bash
    npm start
    ```
-
-5. **访问服务**
-   
-   浏览器访问 `http://localhost:80`
-
-**💡 需要更详细的指导？** 查看[快速开发指南](docs/QUICKSTART.md)
+4. 访问欢迎页/健康检查：
+   - http://localhost:80
+   - http://localhost:80/api/v1/health
 
 ### 微信云托管部署
+1. 推送代码到仓库并在云托管控制台创建服务
+2. 在「环境变量」中设置 `MYSQL_USERNAME`、`MYSQL_PASSWORD`、`MYSQL_ADDRESS`、`PORT`
+3. 构建并发布版本，健康检查通过后即可与小程序联调
 
-1. 前往 [微信云托管控制台](https://cloud.weixin.qq.com/cloudrun/)
-2. 创建新服务并关联本仓库
-3. 配置数据库环境变量（MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_ADDRESS）
-4. 触发部署
-
-详细部署指南请参考[微信云托管文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/)
-
-## 项目结构
+## 目录结构
 
 ```
 .
-├── config/              # 配置文件目录
-├── docs/                # 文档目录
-├── middleware/          # 中间件目录
-├── models/              # 数据模型目录
-├── public/              # 静态文件目录
-│   └── index.html       # 欢迎页面
-├── routes/              # 路由目录
-├── utils/               # 工具函数目录
-├── db.js                # 数据库配置
-├── index.js             # 应用入口文件
-├── package.json         # 项目配置文件
-├── Dockerfile           # Docker 构建文件
-└── container.config.json # 云托管配置文件
+├── config/               # 预留配置目录
+├── docs/                 # 文档（API、规范、升级说明等）
+├── middleware/           # 中间件（参数验证等）
+├── models/               # 数据模型（按需新增）
+├── public/               # 静态资源与欢迎页
+├── routes/               # 路由入口与模块路由
+├── utils/                # 工具函数（统一响应等）
+├── db.js                 # 数据库配置与初始化
+├── index.js              # 应用入口
+├── Dockerfile            # 容器构建配置
+└── package.json
 ```
 
-## API 接口文档
+## 内置接口
+- `GET /api/v1/health`：服务健康检查，返回服务名、版本、时间戳
+- `GET /api/v1/wx/openid`：从微信云托管注入头中获取用户 OpenID，仅小程序内可用
+- `GET /api/v1/tools`：工具列表占位，返回空列表，等待业务接入
 
-### 健康检查接口
+更多设计约定与扩展方式，详见 [docs/API.md](docs/API.md)。
 
-**接口地址**: `GET /api/health`
+## 环境变量
 
-**功能说明**: 检查服务运行状态
-
-**响应示例**:
-```json
-{
-  "code": 0,
-  "message": "服务正常运行",
-  "data": {
-    "service": "文武贝贝工具集",
-    "version": "1.0.0",
-    "timestamp": "2026-01-04T11:20:00.000Z"
-  }
-}
-```
-
-### 获取微信 OpenID
-
-**接口地址**: `GET /api/wx_openid`
-
-**功能说明**: 获取小程序用户的 OpenID
-
-**请求头**: 需要微信小程序调用，包含 `x-wx-source` 和 `x-wx-openid` 头信息
-
-**响应示例**:
-```json
-{
-  "code": 0,
-  "data": {
-    "openid": "用户的OpenID"
-  }
-}
-```
-
-## 开发指南
-
-详细的开发规范和指南请查看：
-- [快速开发指南](docs/QUICKSTART.md) - 快速上手开发
-- [开发规范文档](docs/DEVELOPMENT.md) - 编码规范和最佳实践
-- [API 文档](docs/API.md) - 接口文档和使用说明
-- [升级指南](docs/UPGRADE.md) - 版本升级说明
-- [变更日志](docs/CHANGELOG.md) - 版本变更记录
-
-## 环境变量说明
-
-| 变量名 | 说明 | 必填 | 默认值 |
-|--------|------|------|--------|
-| MYSQL_USERNAME | MySQL 数据库用户名 | 是 | - |
-| MYSQL_PASSWORD | MySQL 数据库密码 | 是 | - |
-| MYSQL_ADDRESS | MySQL 数据库地址（格式：host:port） | 是 | - |
+| 变量名 | 说明 | 是否必填 | 默认值 |
+| --- | --- | --- | --- |
+| MYSQL_USERNAME | 数据库用户名 | 部署环境建议必填 | - |
+| MYSQL_PASSWORD | 数据库密码 | 部署环境建议必填 | - |
+| MYSQL_ADDRESS | 数据库地址，格式 host:port | 部署环境建议必填 | - |
 | PORT | 服务监听端口 | 否 | 80 |
+| SERVICE_VERSION | 显示用版本号 | 否 | package.json version |
 
-## 注意事项
+## 开发规范与文档
+- 开发规范与约定：[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+- API 约定与示例：[docs/API.md](docs/API.md)
+- 快速上手与部署：[docs/QUICKSTART.md](docs/QUICKSTART.md)
+- 升级与版本策略：[docs/UPGRADE.md](docs/UPGRADE.md)
+- 变更记录：[docs/CHANGELOG.md](docs/CHANGELOG.md)
 
-- 如果不是通过微信云托管控制台部署，而是手动部署，需要在服务设置中配置环境变量
-- 生产环境请确保数据库连接信息的安全性
-- 建议使用 HTTPS 协议访问服务
+## 许可
 
-## 贡献指南
-
-欢迎提交 Issue 和 Pull Request 来帮助改进项目！
-
-## 许可证
-
-本项目采用 [Apache-2.0](LICENSE) 许可证
-
-## 联系方式
-
-- 项目地址: [https://github.com/WenWuBeiBei/wxcloudrun-express](https://github.com/WenWuBeiBei/wxcloudrun-express)
-- 问题反馈: [提交 Issue](https://github.com/WenWuBeiBei/wxcloudrun-express/issues)
-
----
-
-© 2026 文武贝贝工具集 - Powered by 微信云托管
+Apache-2.0。欢迎基于本框架扩展你的工具集能力。
 

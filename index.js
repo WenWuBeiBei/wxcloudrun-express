@@ -2,84 +2,52 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const { init: initDB } = require("./db");
-
-const logger = morgan("tiny");
+const { init: initDB, sequelize } = require("./db");
+const apiRouter = require("./routes");
+const { fail } = require("./utils/response");
 
 const app = express();
 
-// 中间件配置
+const SERVICE_NAME = process.env.SERVICE_NAME || "文武贝贝工具集";
+const SERVICE_VERSION = process.env.SERVICE_VERSION || process.env.npm_package_version || "0.1.0";
+const port = process.env.PORT || 80;
+
+// 基础中间件配置
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
-app.use(logger);
+app.use(morgan("tiny"));
 
-// 静态文件服务
+// 静态文件与首页
 app.use(express.static(path.join(__dirname, "public")));
-
-// 首页
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// 健康检查接口
-app.get("/api/health", async (req, res) => {
-  res.send({
-    code: 0,
-    message: "服务正常运行",
-    data: {
-      service: "文武贝贝工具集",
-      version: "1.0.0",
-      timestamp: new Date().toISOString()
-    }
-  });
-});
+// API 路由入口
+app.use("/api/v1", apiRouter);
 
-// 小程序调用，获取微信 Open ID
-app.get("/api/wx_openid", async (req, res) => {
-  if (req.headers["x-wx-source"]) {
-    res.send({
-      code: 0,
-      data: {
-        openid: req.headers["x-wx-openid"]
-      }
-    });
-  } else {
-    res.status(400).send({
-      code: -1,
-      message: "非微信小程序调用"
-    });
-  }
-});
+// 统一 404 处理
+app.use((req, res) => fail(res, "接口不存在", 404, 404));
 
-// 404 处理
-app.use((req, res) => {
-  res.status(404).send({
-    code: 404,
-    message: "接口不存在"
-  });
-});
-
-// 错误处理
+// 统一错误处理
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send({
-    code: 500,
-    message: "服务器内部错误"
-  });
+  console.error(err);
+  fail(res, "服务器内部错误", 500, 500);
 });
-
-const port = process.env.PORT || 80;
 
 async function bootstrap() {
   try {
-    // 初始化数据库
     await initDB();
-    console.log("数据库初始化成功");
-    
-    // 启动服务器
+
+    if (!sequelize) {
+      console.warn("未检测到数据库配置，已跳过连接检测");
+    } else {
+      console.log("数据库初始化完成");
+    }
+
     app.listen(port, () => {
-      console.log(`文武贝贝工具集服务启动成功，端口: ${port}`);
+      console.log(`${SERVICE_NAME} 已启动，端口: ${port}，版本: ${SERVICE_VERSION}`);
     });
   } catch (error) {
     console.error("服务启动失败:", error);

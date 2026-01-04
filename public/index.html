@@ -3,186 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>文武贝贝工具集</title>
+  <title>文武贝贝工具集 · 服务框架</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Space Grotesk', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: radial-gradient(circle at 20% 20%, #0ea5e9 0%, #0b7bba 35%, #0f172a 100%);
+      color: #0b1221;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
+      justify-content: center;
+      padding: 32px;
     }
-    
-    .container {
-      background: white;
-      border-radius: 20px;
-      padding: 60px 40px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      text-align: center;
-    }
-    
-    .logo {
-      font-size: 72px;
-      margin-bottom: 20px;
-    }
-    
-    h1 {
-      font-size: 36px;
-      color: #333;
-      margin-bottom: 16px;
-      font-weight: 600;
-    }
-    
-    .subtitle {
-      font-size: 18px;
-      color: #666;
-      margin-bottom: 40px;
-    }
-    
-    .status {
-      display: inline-block;
-      background: #10b981;
-      color: white;
-      padding: 10px 24px;
-      border-radius: 20px;
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
-    
-    .info {
+
+    .shell {
+      width: min(1080px, 100%);
       background: #f8fafc;
-      border-radius: 12px;
-      padding: 24px;
-      text-align: left;
-      margin-bottom: 24px;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 25px 80px rgba(12, 74, 110, 0.25);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
     }
-    
-    .info-item {
+
+    .hero {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(14, 116, 144, 0.08));
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0ea5e9;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      box-shadow: 0 10px 30px rgba(14, 165, 233, 0.35);
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .meta {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .meta-row {
       display: flex;
       justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .info-item:last-child {
-      border-bottom: none;
-    }
-    
-    .info-label {
-      color: #64748b;
+      align-items: center;
       font-size: 14px;
+      color: #0f172a;
+      background: #f1f5f9;
+      padding: 10px 12px;
+      border-radius: 10px;
     }
-    
-    .info-value {
-      color: #1e293b;
-      font-weight: 500;
-      font-size: 14px;
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
     }
-    
-    .footer {
-      margin-top: 30px;
-      color: #94a3b8;
-      font-size: 13px;
-    }
-    
+
     .links {
       display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 20px;
       flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
     }
-    
+
     .link {
-      display: inline-block;
-      padding: 8px 16px;
-      background: #667eea;
-      color: white;
       text-decoration: none;
-      border-radius: 6px;
+      color: #0b7bba;
+      font-weight: 600;
       font-size: 14px;
-      transition: background 0.3s;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    
+
     .link:hover {
-      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
     }
-    
-    @media (max-width: 600px) {
-      .container {
-        padding: 40px 24px;
-      }
-      
-      h1 {
-        font-size: 28px;
-      }
-      
-      .logo {
-        font-size: 56px;
-      }
+
+    .footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 18px; }
+      .shell { padding: 22px; }
+      .hero h1 { font-size: 26px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">🛠️</div>
-    <h1>文武贝贝工具集</h1>
-    <p class="subtitle">基于微信云托管的小程序工具集服务</p>
-    
-    <div class="status">✓ 服务运行中</div>
-    
-    <div class="info">
-      <div class="info-item">
-        <span class="info-label">服务名称</span>
-        <span class="info-value">文武贝贝工具集</span>
+  <main class="shell">
+    <section class="hero">
+      <div class="badge">文武贝贝 · 微信云托管</div>
+      <h1>工具集后端框架就绪</h1>
+      <p>这是面向微信小程序的轻量服务框架，已接好健康检查与 OpenID 基础能力，等待你为小程序接入第一个工具模块。</p>
+      <div class="meta">
+        <div class="meta-row"><span>服务状态</span><span class="pill" id="status">检测中...</span></div>
+        <div class="meta-row"><span>当前版本</span><span class="pill" id="version">加载中...</span></div>
+        <div class="meta-row"><span>服务器时间</span><span class="pill" id="timestamp">加载中...</span></div>
       </div>
-      <div class="info-item">
-        <span class="info-label">当前版本</span>
-        <span class="info-value" id="version">加载中...</span>
+    </section>
+
+    <section class="card">
+      <h3>立即可用的接口</h3>
+      <p>基础接口已准备完毕，可直接与小程序侧联调。</p>
+      <div class="grid">
+        <div class="meta-row"><span>GET /api/v1/health</span><span class="pill">健康检查</span></div>
+        <div class="meta-row"><span>GET /api/v1/wx/openid</span><span class="pill">获取 OpenID</span></div>
+        <div class="meta-row"><span>GET /api/v1/tools</span><span class="pill">工具列表占位</span></div>
       </div>
-      <div class="info-item">
-        <span class="info-label">服务状态</span>
-        <span class="info-value" id="status">检测中...</span>
+      <div class="links">
+        <a class="link" href="/api/v1/health" target="_blank">查看健康状态</a>
+        <a class="link" href="https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/" target="_blank">微信云托管</a>
       </div>
-      <div class="info-item">
-        <span class="info-label">服务器时间</span>
-        <span class="info-value" id="timestamp">加载中...</span>
+    </section>
+
+    <section class="card">
+      <h3>下一步怎么做？</h3>
+      <p>遵循框架的开发规范，接入你的第一个小工具。</p>
+      <div class="grid">
+        <div class="meta-row"><span>1. 在 routes/tools.js 实现接口</span><span class="pill">API</span></div>
+        <div class="meta-row"><span>2. 在 models/ 设计数据结构</span><span class="pill">数据</span></div>
+        <div class="meta-row"><span>3. 更新 docs/API.md & README</span><span class="pill">文档</span></div>
+        <div class="meta-row"><span>4. 小程序端通过 wx.request 调用</span><span class="pill">联调</span></div>
       </div>
-    </div>
-    
-    <div class="links">
-      <a href="https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/" class="link" target="_blank">开发文档</a>
-      <a href="/api/health" class="link" target="_blank">健康检查</a>
-    </div>
-    
-    <div class="footer">
-      <p>© 2026 文武贝贝工具集 - Powered by 微信云托管</p>
-    </div>
-  </div>
-  
+    </section>
+
+    <footer class="footer">© 2026 文武贝贝工具集 · Powered by 微信云托管</footer>
+  </main>
+
   <script>
-    // 获取服务健康状态
-    fetch('/api/health')
-      .then(response => response.json())
-      .then(data => {
-        if (data.code === 0) {
+    fetch('/api/v1/health')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.code === 0 && data.data) {
           document.getElementById('version').textContent = data.data.version;
           document.getElementById('status').textContent = '正常';
           document.getElementById('timestamp').textContent = new Date(data.data.timestamp).toLocaleString('zh-CN');
+        } else {
+          document.getElementById('status').textContent = '无法获取';
         }
       })
-      .catch(error => {
-        console.error('获取服务状态失败:', error);
+      .catch(() => {
         document.getElementById('status').textContent = '获取失败';
       });
   </script>
